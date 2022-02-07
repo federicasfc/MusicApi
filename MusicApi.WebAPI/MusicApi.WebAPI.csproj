@@ -8,4 +8,10 @@
     <PackageReference Include="Swashbuckle.AspNetCore" Version="5.6.3" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\MusicApi.Service\MusicApi.Service.csproj" />
+    <ProjectReference Include="..\MusicApi.Models\MusicApi.Models.csproj" />
+    <ProjectReference Include="..\MusicApi.Data\MusicApi.Data.csproj" />
+  </ItemGroup>
+
 </Project>
