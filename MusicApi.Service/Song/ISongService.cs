@@ -11,5 +11,16 @@ namespace MusicApi.Service.Song
         Task<bool> CreateSongAsync(SongCreate request);
 
         Task<IEnumerable<SongListItem>> GetAllSongsAsync();
+
+        Task<SongDetail> GetSongByIdAsync(int songId);
+
+        Task<bool> UpdateSongAsync(SongUpdate request);
+
+        Task<bool> DeleteSongAsync(int songId);
+
+
+
+
+
     }
 }

@@ -24,6 +24,8 @@ namespace MusicApi.Service.Song
 
         //CreateSong
 
+        //Needs adjusted so that the LabelId of the song is automatically set to whatever the LabelId is of the artist corresponding to the ArtistId it takes in
+
         public async Task<bool> CreateSongAsync(SongCreate request)
         {
             var songEntity = new SongEntity
@@ -56,6 +58,69 @@ namespace MusicApi.Service.Song
             }).ToListAsync();
 
             return songs;
+        }
+
+        //GetSongById
+
+        public async Task<SongDetail> GetSongByIdAsync(int songId)
+        {
+            var songEntity = await _dbContext.Songs
+            .FirstOrDefaultAsync(e => e.SongId == songId);
+
+            if (songEntity is null)
+                return null;
+
+            return new SongDetail
+            {
+
+                SongId = songEntity.SongId,
+                ArtistId = songEntity.ArtistId,
+                LabelId = songEntity.LabelId,
+                Name = songEntity.Name,
+                RunTime = songEntity.RunTime,
+                YearReleased = songEntity.YearReleased,
+                Genre = songEntity.Genre,
+                Album = songEntity.Album
+            };
+
+        }
+
+        //UpdateSongAsync 
+
+        //For future improvements: Make it so that not all of the properties HAVE to be updated (remove annotations); Add in some logic that tests if the target property that we don't want to update is null. If not null, don't overwrite to null when it's not adjusted in the method; maybe look at RR for reference?
+
+        public async Task<bool> UpdateSongAsync(SongUpdate request)
+        {
+            var songEntity = await _dbContext.Songs.FindAsync(request.SongId);
+
+            if (songEntity?.SongId is null)
+                return false;
+
+            songEntity.Name = request.Name;
+            songEntity.RunTime = request.RunTime;
+            songEntity.YearReleased = request.YearReleased;
+            songEntity.Genre = request.Genre;
+            songEntity.Album = request.Album;
+
+            var numberOfChanges = await _dbContext.SaveChangesAsync();
+
+            return numberOfChanges == 1; //just as a reminder, this number is signifying the number of rows in the db changed
+        }
+
+        //DeleteSong
+
+        public async Task<bool> DeleteSongAsync(int songId)
+        {
+            var songEntity = await _dbContext.Songs.FindAsync(songId);
+
+            if (songEntity?.SongId is null)
+                return false;
+
+            _dbContext.Songs.Remove(songEntity);
+            var numberOfChanges = await _dbContext.SaveChangesAsync(); //set to bool, so if only one row is changed, will return true
+            return numberOfChanges == 1;
+
+
         }
 
     }
