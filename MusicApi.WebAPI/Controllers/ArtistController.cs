@@ -24,6 +24,7 @@ namespace MusicApi.WebAPI.Controllers
         }
 
         // CreateArtist endpoint 
+        
         [HttpPost]
         /* WORKS */
         public async Task<IActionResult> CreateArtist([FromForm] ArtistCreate request)
@@ -36,6 +37,30 @@ namespace MusicApi.WebAPI.Controllers
 
 
             return Ok("Artist created successfully");
+        }
+
+        // GetAllArtists endpoint
+
+        [HttpGet]
+        /* WORKS */
+        public async Task<IActionResult> GetAllArtists()
+        {
+            var artists = await _artistService.GetAllArtistsAsync();
+            return Ok(artists);
+        }
+
+        // GetArtistById endpoint
+
+        [HttpGet("{artistId:int}")]
+        /* WORKS */
+        public async Task<IActionResult> GetArtistById([FromRoute] int artistId)
+        {
+            var detail = await _artistService.GetArtistByIdAsync(artistId);
+
+            return detail is not null
+            ? Ok(detail)
+            : NotFound();
+
         }
     }
 }

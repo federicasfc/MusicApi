@@ -9,5 +9,9 @@ namespace MusicApi.Service.Artist
     public interface IArtistService
     {
         Task<bool> CreateArtistAsync(ArtistCreate request);
+
+        Task<IEnumerable<ArtistListItem>> GetAllArtistsAsync();
+
+        Task<ArtistDetail> GetArtistByIdAsync(int artistId);
     }
 }
