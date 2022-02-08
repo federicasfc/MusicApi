@@ -7,6 +7,13 @@ namespace MusicApi.Models.Label
 {
     public class LabelDetail
     {
-        
+        public int LabelId { get; set; }
+
+        public string Name { get; set; }
+
+        public int YearFounded { get; set; }
+
+        public string Location { get; set; }
+
     }
 }

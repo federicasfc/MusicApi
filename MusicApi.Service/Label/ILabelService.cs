@@ -9,5 +9,7 @@ namespace MusicApi.Service.Label
     public interface ILabelService
     {
          Task<bool> CreateLabelAsync(LabelCreate request);
+
+         Task<LabelDetail> GetLabelByIdAsync(int labelId);
     }
 }

@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 using MusicApi.Data;
 using MusicApi.Data.Entities;
 using MusicApi.Models.Label;
@@ -30,6 +31,21 @@ namespace MusicApi.Service.Label
 
             var numberOfChanges = await _dbContext.SaveChangesAsync();
             return numberOfChanges == 1;
+        }
+
+        // GetLabelById method
+        public async Task<LabelDetail> GetLabelByIdAsync(int labelId)
+        {
+            var labelEntity = await _dbContext.Labels
+                .FirstOrDefaultAsync(e => e.LabelId == labelId);
+
+            return labelEntity is null ? null : new LabelDetail
+            {
+                LabelId = labelEntity.LabelId,
+                Name = labelEntity.Name,
+                YearFounded = labelEntity.YearFounded,
+                Location = labelEntity.Location
+            };
         }
 
         

@@ -33,5 +33,14 @@ namespace MusicApi.WebAPI.Controllers
 
             return Ok("Label created successfully.");
         }
+
+        // GetLabelById endpoint
+        [HttpGet("{labelId:int}")]
+        public async Task<IActionResult> GetLabelById([FromRoute] int labelId)
+        {
+            var detail = await _labelService.GetLabelByIdAsync(labelId);
+
+            return detail is not null ? Ok(detail) : NotFound();
+        }
     }
 }
