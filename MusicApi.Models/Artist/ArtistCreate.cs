@@ -4,28 +4,19 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace MusicApi.Data.Entities
+namespace MusicApi.Models.Artist
 {
-    public class ArtistEntity
+    public class ArtistCreate
     {
-        [Key]
-        public int ArtistId { get; set; }
-
         [Required]
+        [MinLength(2, ErrorMessage = "{0} must be at least {1} characters long.")]
         public string Name { get; set; }
 
         [Required]
+        [MinLength(2, ErrorMessage = "{0} must be at least {1} characters long.")]
         public string Genre { get; set; }
-
-        public int NumberOfStudioAlbums { get; set; }
-
-        //Foreign Key navigation properties
 
         [Required]
         public int LabelId { get; set; }
-
-        public LabelEntity Label { get; set; }
-
-        public List<SongEntity> Songs { get; set; }
     }
 }

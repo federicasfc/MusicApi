@@ -13,6 +13,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 using MusicApi.Data;
+using MusicApi.Service.Artist;
 
 namespace MusicApi.WebAPI
 {
@@ -31,6 +32,9 @@ namespace MusicApi.WebAPI
             //Add connection string and DbContext setup
             var connectionString = Configuration.GetConnectionString("DefaultConnection");
             services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(connectionString));
+
+            // Add Ingredient Service/Interface for Dependency Injection here
+            services.AddScoped<IArtistService, ArtistService>();
 
             services.AddControllers();
             services.AddSwaggerGen(c =>
