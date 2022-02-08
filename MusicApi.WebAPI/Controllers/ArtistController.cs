@@ -24,7 +24,7 @@ namespace MusicApi.WebAPI.Controllers
         }
 
         // CreateArtist endpoint 
-        
+
         [HttpPost]
         /* WORKS */
         public async Task<IActionResult> CreateArtist([FromForm] ArtistCreate request)
@@ -61,6 +61,20 @@ namespace MusicApi.WebAPI.Controllers
             ? Ok(detail)
             : NotFound();
 
+        }
+
+        // UpdateArtist endpoint
+
+        [HttpPut]
+        /* WORKS */
+        public async Task<IActionResult> UpdateArtistById([FromForm] ArtistUpdate request)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            return await _artistService.UpdateArtistAsync(request)
+            ? Ok("Artist updated successfully") 
+            : BadRequest("Artist could not be updated");
         }
     }
 }

@@ -69,5 +69,29 @@ namespace MusicApi.Service.Artist
                 LabelId = artistEntity.LabelId
             };
         }
+
+        // UpdateArtist method
+        public async Task<bool> UpdateArtistAsync(ArtistUpdate request)
+        {
+            //Find the artist and validate the ArtistId exists
+
+            var artistEntity = await _dbContext.Artists.FindAsync(request.ArtistId);
+
+            if (artistEntity?.ArtistId == null)
+                return false;
+
+            // update the entity's properties
+            artistEntity.Name = request.Name;
+            artistEntity.Genre = request.Genre;
+            artistEntity.NumberOfStudioAlbums = request.NumberOfStudioAlbums;
+
+            //Save the changes to the database and capture how many rows were updated
+
+            var numberOfChanges = await _dbContext.SaveChangesAsync();
+
+            //numberOfChanges is stated to be equal to 1 because only one row is updated
+
+            return numberOfChanges == 1;
+        }
     }
 }

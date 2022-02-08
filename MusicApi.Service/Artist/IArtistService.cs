@@ -13,5 +13,7 @@ namespace MusicApi.Service.Artist
         Task<IEnumerable<ArtistListItem>> GetAllArtistsAsync();
 
         Task<ArtistDetail> GetArtistByIdAsync(int artistId);
+
+        Task<bool> UpdateArtistAsync(ArtistUpdate request);
     }
 }
