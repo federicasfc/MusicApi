@@ -76,5 +76,16 @@ namespace MusicApi.WebAPI.Controllers
             ? Ok("Artist updated successfully") 
             : BadRequest("Artist could not be updated");
         }
+
+        // DeleteArtist endpoint
+
+        [HttpDelete("{artistId:int}")]
+
+        public async Task<IActionResult> DeleteArtist([FromRoute] int artistId)
+        {
+            return await _artistService.DeleteArtistAsync(artistId)
+            ? Ok($"Artist {artistId} was deleted successfully")
+            : BadRequest($"Artist {artistId} could not be deleted");
+        }
     }
 }

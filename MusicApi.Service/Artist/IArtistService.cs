@@ -15,5 +15,7 @@ namespace MusicApi.Service.Artist
         Task<ArtistDetail> GetArtistByIdAsync(int artistId);
 
         Task<bool> UpdateArtistAsync(ArtistUpdate request);
+
+        Task<bool> DeleteArtistAsync(int artistId);
     }
 }
