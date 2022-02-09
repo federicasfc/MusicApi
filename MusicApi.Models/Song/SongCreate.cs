@@ -15,9 +15,9 @@ namespace MusicApi.Models.Song
 
         public int LabelId { get; set; }
 
-        [Required]
+        //[Required]
 
-        public int ArtistId { get; set; }
+        //public int ArtistId { get; set; }
 
         [Required]
         [MinLength(2, ErrorMessage = "{0} must be at least {1} characters long.")]

@@ -6,6 +6,8 @@ using MusicApi.Data;
 using MusicApi.Data.Entities;
 using MusicApi.Models.Artist;
 using Microsoft.EntityFrameworkCore;
+using MusicApi.Models.Label;
+using MusicApi.Models.Song;
 
 namespace MusicApi.Service.Artist
 {
@@ -66,9 +68,21 @@ namespace MusicApi.Service.Artist
                 Name = artistEntity.Name,
                 Genre = artistEntity.Genre,
                 NumberOfStudioAlbums = artistEntity.NumberOfStudioAlbums,
-                LabelId = artistEntity.LabelId
+                //LabelId = artistEntity.LabelId
+                Label = new LabelListItem()
+                {
+                    LabelId = artistEntity.Label.LabelId,
+                    Name = artistEntity.Label.Name
+                },
+                Songs = artistEntity.Songs.Select(entity => new SongListItem
+                {
+                    SongId = entity.SongId,
+                    Name = entity.Name
+
+                }).ToList()
+
             };
-        }
+        } //not working- not sure why identical to GetSongById refactor
 
         // UpdateArtist method
         public async Task<bool> UpdateArtistAsync(ArtistUpdate request)

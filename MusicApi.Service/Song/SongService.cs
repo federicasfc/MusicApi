@@ -108,7 +108,7 @@ namespace MusicApi.Service.Song
         {
             var songEntity = await _dbContext.Songs.FindAsync(request.SongId);
 
-            if (songEntity?.SongId is null)
+            if (songEntity?.SongId is null) //Refactor to match 148 and 153
                 return false;
 
             songEntity.Name = request.Name;
@@ -128,7 +128,7 @@ namespace MusicApi.Service.Song
         {
             var songEntity = await _dbContext.Songs.FindAsync(songId);
 
-            if (songEntity?.SongId is null)
+            if (songEntity?.SongId is null) //Refactor to match 148 and 153 
                 return false;
 
             _dbContext.Songs.Remove(songEntity);
@@ -137,6 +137,40 @@ namespace MusicApi.Service.Song
 
 
         }
+
+        //AssignSongToArtists Method
+
+        public async Task<bool> AssignSongToArtists(int songId, int artistId)
+        {
+            var songToAdd = await _dbContext.Songs.FindAsync(songId);
+
+            if (songToAdd is null)
+                return false;
+
+            var artistToAssignTo = await _dbContext.Artists.Include(a => a.Songs).FirstOrDefaultAsync(a => a.ArtistId == artistId);
+
+            if (artistToAssignTo is null)
+                return false;
+
+
+            artistToAssignTo.Songs.Add(songToAdd);
+
+            var numberOfChanges = await _dbContext.SaveChangesAsync();
+
+            return numberOfChanges == 1;
+
+
+        } //Http Put? will have to adjust route to account for both int parameters
+
+        //Assigning Songs to Artists
+        //Task<bool> 
+        //Parameters: songId and artistId
+        //songToAdd = await _dbContext.Songs.FindAsync(songId)
+        //Dealing with a SongEntity first - validate not null
+        //Then dealing with ArtistEntity - validate not null
+        //artistToAssing already has list of songs so just add song gotten with id to that property Songs
+        //artistToAssign.Songs.Add(songToAdd)
+        //savechangesasync
 
     }
 }

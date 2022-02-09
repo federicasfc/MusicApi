@@ -68,7 +68,7 @@ namespace MusicApi.WebAPI.Controllers
                 return NotFound();
 
             return Ok(detail);
-        } //works
+        } //works with new many to many rship
 
         //UpdateSong
 
@@ -86,6 +86,8 @@ namespace MusicApi.WebAPI.Controllers
 
         } //works
 
+        //Delete Songs
+
         [HttpDelete("{songId:int}")]
 
         public async Task<IActionResult> DeleteSong([FromRoute] int songId)
@@ -95,6 +97,24 @@ namespace MusicApi.WebAPI.Controllers
 
             return Ok($"Song {songId} was deleted successfully");
         } //works
+
+        //AssignSongToArtist
+
+        [HttpPut("{songId:int}/{artistId:int}")]
+
+        public async Task<IActionResult> AssignSongToArtists([FromRoute] int songId, [FromRoute] int artistId)
+        {
+            if (songId == 0 || artistId == 0)
+                return NotFound("Song or Artist could not be found");
+
+            if (await _songService.AssignSongToArtists(songId, artistId) == false)
+                return BadRequest("Song could not be added to Artists");
+
+            return Ok("Song added to Artists");
+        } //works!!
+
+
+
 
 
 

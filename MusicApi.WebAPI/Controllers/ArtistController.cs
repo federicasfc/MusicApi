@@ -33,7 +33,7 @@ namespace MusicApi.WebAPI.Controllers
                 return BadRequest(ModelState);
 
             if (await _artistService.CreateArtistAsync(request) == false)
-                return BadRequest("Artist could not be created."); 
+                return BadRequest("Artist could not be created.");
 
 
             return Ok("Artist created successfully");
@@ -61,7 +61,7 @@ namespace MusicApi.WebAPI.Controllers
             ? Ok(detail)
             : NotFound();
 
-        }
+        } //not working with many to many refactor
 
         // UpdateArtist endpoint
 
@@ -73,7 +73,7 @@ namespace MusicApi.WebAPI.Controllers
                 return BadRequest(ModelState);
 
             return await _artistService.UpdateArtistAsync(request)
-            ? Ok("Artist updated successfully") 
+            ? Ok("Artist updated successfully")
             : BadRequest("Artist could not be updated");
         }
 
