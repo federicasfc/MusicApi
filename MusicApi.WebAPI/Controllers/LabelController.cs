@@ -62,5 +62,15 @@ namespace MusicApi.WebAPI.Controllers
             ? Ok("Label updated successfully")
             : BadRequest("Label could not be updated");
         }
+
+        //DeleteLabel endpoint
+        [HttpDelete("{labelId:int}")]
+
+        public async Task<IActionResult> DeleteLabel([FromRoute] int labelId)
+        {
+            return await _labelService.DeleteLabelAsync(labelId)
+            ? Ok($"Label {labelId} was deleted successfully")
+            : BadRequest($"Label {labelId} could not be deleted");
+        }
     }
 }

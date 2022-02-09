@@ -77,6 +77,18 @@ namespace MusicApi.Service.Label
             return numberOfChanges == 1;
         }
 
+        //DeleteLabel method
+        public async Task<bool> DeleteLabelAsync(int labelId)
+        {
+            var labelEntity = await _dbContext.Labels.FindAsync(labelId);
+
+            if (labelEntity?.LabelId == null)
+                return false;
+
+            _dbContext.Labels.Remove(labelEntity);
+            return await _dbContext.SaveChangesAsync() == 1;
+        }
+
         
     }
 }
