@@ -43,6 +43,15 @@ namespace MusicApi.WebAPI.Controllers
             return detail is not null ? Ok(detail) : NotFound();
         }
 
+        // GetLabelByName endpoint
+        [HttpGet("{labelName}")]
+        public async Task<IActionResult> GetLabelByName([FromRoute] string labelName)
+        {
+            var detail = await _labelService.GetLabelByNameAsync(labelName);
+
+            return detail is not null ? Ok(detail) : NotFound();
+        }
+
         // GetAllLabels endpoint
         [HttpGet]
         public async Task<IActionResult> GetAllLabels()
@@ -65,7 +74,6 @@ namespace MusicApi.WebAPI.Controllers
 
         //DeleteLabel endpoint
         [HttpDelete("{labelId:int}")]
-
         public async Task<IActionResult> DeleteLabel([FromRoute] int labelId)
         {
             return await _labelService.DeleteLabelAsync(labelId)

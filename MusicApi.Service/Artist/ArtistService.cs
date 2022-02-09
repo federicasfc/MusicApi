@@ -70,6 +70,26 @@ namespace MusicApi.Service.Artist
             };
         }
 
+        // GetArtistByName method
+        public async Task<ArtistDetail> GetArtistByNameAsync(string artistName)
+        {
+            //Find the first artist that has the given Name
+
+            var artistEntity = await _dbContext.Artists
+                .FirstOrDefaultAsync(e => e.Name == artistName);
+
+            //If artistEntity is null then return null, otherwise initialize and return a new ArtistDetail
+
+            return artistEntity is null ? null : new ArtistDetail
+            {
+                ArtistId = artistEntity.ArtistId,
+                Name = artistEntity.Name,
+                Genre = artistEntity.Genre,
+                NumberOfStudioAlbums = artistEntity.NumberOfStudioAlbums,
+                LabelId = artistEntity.LabelId
+            };
+        }
+
         // UpdateArtist method
         public async Task<bool> UpdateArtistAsync(ArtistUpdate request)
         {

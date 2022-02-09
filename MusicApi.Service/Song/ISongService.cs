@@ -14,6 +14,8 @@ namespace MusicApi.Service.Song
 
         Task<SongDetail> GetSongByIdAsync(int songId);
 
+        Task<SongDetail> GetSongByNameAsync(string songName);
+
         Task<bool> UpdateSongAsync(SongUpdate request);
 
         Task<bool> DeleteSongAsync(int songId);

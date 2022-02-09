@@ -48,6 +48,21 @@ namespace MusicApi.Service.Label
             };
         }
 
+        // GetLabelByName method
+        public async Task<LabelDetail> GetLabelByNameAsync(string labelName)
+        {
+            var labelEntity = await _dbContext.Labels
+                .FirstOrDefaultAsync(e => e.Name == labelName);
+
+            return labelEntity is null ? null : new LabelDetail
+            {
+                LabelId = labelEntity.LabelId,
+                Name = labelEntity.Name,
+                YearFounded = labelEntity.YearFounded,
+                Location = labelEntity.Location
+            };
+        }
+
         // GetAllLabels method
         public async Task<IEnumerable<LabelListItem>> GetAllLabelsAsync()
         {
