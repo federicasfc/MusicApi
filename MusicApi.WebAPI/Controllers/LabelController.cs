@@ -42,5 +42,13 @@ namespace MusicApi.WebAPI.Controllers
 
             return detail is not null ? Ok(detail) : NotFound();
         }
+
+        // GetAllLabels endpoint
+        [HttpGet]
+        public async Task<IActionResult> GetAllLabels()
+        {
+            var labels = await _labelService.GetAllLabelsAsync();
+            return Ok(labels);
+        }
     }
 }
