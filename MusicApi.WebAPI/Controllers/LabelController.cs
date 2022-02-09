@@ -50,5 +50,17 @@ namespace MusicApi.WebAPI.Controllers
             var labels = await _labelService.GetAllLabelsAsync();
             return Ok(labels);
         }
+
+        // UpdateLabel endpoint
+        [HttpPut]
+        public async Task<IActionResult> UpdateLabelById([FromForm] LabelUpdate request)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            return await _labelService.UpdateLabelAsync(request)
+            ? Ok("Label updated successfully")
+            : BadRequest("Label could not be updated");
+        }
     }
 }

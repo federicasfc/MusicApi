@@ -13,5 +13,7 @@ namespace MusicApi.Service.Label
          Task<LabelDetail> GetLabelByIdAsync(int labelId);
 
          Task<IEnumerable<LabelListItem>> GetAllLabelsAsync();
+
+         Task<bool> UpdateLabelAsync(LabelUpdate request);
     }
 }

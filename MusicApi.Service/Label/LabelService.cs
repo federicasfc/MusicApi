@@ -60,6 +60,23 @@ namespace MusicApi.Service.Label
             return labels;
         }
 
+        // UpdateLabel method
+        public async Task<bool> UpdateLabelAsync(LabelUpdate request)
+        {
+            var labelEntity = await _dbContext.Labels.FindAsync(request.LabelId);
+
+            if (labelEntity?.LabelId == null)
+                return false;
+            
+            labelEntity.Name = request.Name;
+            labelEntity.YearFounded = request.YearFounded;
+            labelEntity.Location = request.Location;
+
+            var numberOfChanges = await _dbContext.SaveChangesAsync();
+
+            return numberOfChanges == 1;
+        }
+
         
     }
 }
