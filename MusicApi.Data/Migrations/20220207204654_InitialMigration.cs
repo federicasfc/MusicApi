@@ -71,7 +71,7 @@ namespace MusicApi.Data.Migrations
                         column: x => x.LabelId,
                         principalTable: "Labels",
                         principalColumn: "LabelId",
-                        onDelete: ReferentialAction.NoAction); //if a label is deleted, no action with song 
+                        onDelete: ReferentialAction.NoAction); //if a label is deleted, no action with song //look more into cascade deletetion
                 });
 
             migrationBuilder.CreateIndex(
