@@ -32,10 +32,10 @@ namespace MusicApi.Data.Entities
         public int LabelId { get; set; }
         public LabelEntity Label { get; set; }
 
-        [Required]
-        public int ArtistId { get; set; }
+        //[Required]
+        // public int ArtistId { get; set; }
 
-        public ArtistEntity Artist { get; set; }
+        public List<ArtistEntity> Artists { get; set; }
 
 
     }

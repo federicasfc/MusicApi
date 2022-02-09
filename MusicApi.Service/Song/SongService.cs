@@ -5,6 +5,8 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using MusicApi.Data;
 using MusicApi.Data.Entities;
+using MusicApi.Models.Artist;
+using MusicApi.Models.Label;
 using MusicApi.Models.Song;
 
 namespace MusicApi.Service.Song
@@ -32,13 +34,13 @@ namespace MusicApi.Service.Song
             {
                 SongId = request.SongId,
                 LabelId = request.LabelId,
-                ArtistId = request.ArtistId,
+                // ArtistId = request.ArtistId,
                 Name = request.Name,
                 YearReleased = request.YearReleased,
                 Genre = request.Genre
 
 
-            };
+            }; //if many to many relationship between song and artist doesn't work, add an include to the artist so that the artist's labelid is accessible and can be automatically matched to the song's labelId (have been doing it manually to test so far)
 
             _dbContext.Songs.Add(songEntity);
 
@@ -65,6 +67,8 @@ namespace MusicApi.Service.Song
         public async Task<SongDetail> GetSongByIdAsync(int songId)
         {
             var songEntity = await _dbContext.Songs
+            .Include(s => s.Label)
+            .Include(s => s.Artists)
             .FirstOrDefaultAsync(e => e.SongId == songId);
 
             if (songEntity is null)
@@ -74,13 +78,24 @@ namespace MusicApi.Service.Song
             {
 
                 SongId = songEntity.SongId,
-                ArtistId = songEntity.ArtistId,
-                LabelId = songEntity.LabelId,
+                // ArtistId = songEntity.ArtistId,
+                // LabelId = songEntity.LabelId,
                 Name = songEntity.Name,
                 RunTime = songEntity.RunTime,
                 YearReleased = songEntity.YearReleased,
                 Genre = songEntity.Genre,
-                Album = songEntity.Album
+                Album = songEntity.Album,
+                Label = new LabelListItem()
+                {
+                    LabelId = songEntity.Label.LabelId,
+                    Name = songEntity.Label.Name
+                },
+                Artists = songEntity.Artists.Select(entity => new ArtistListItem
+                {
+                    ArtistId = entity.ArtistId,
+                    Name = entity.Name
+                }).ToList()
+
             };
 
         }
