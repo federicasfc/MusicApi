@@ -130,14 +130,27 @@ namespace MusicApi.Service.Song
         {
             var songEntity = await _dbContext.Songs.FindAsync(request.SongId);
 
-            if (songEntity?.SongId is null) //Refactor to match 148 and 153
+            if (songEntity is null)
                 return false;
 
-            songEntity.Name = request.Name;
-            songEntity.RunTime = request.RunTime;
-            songEntity.YearReleased = request.YearReleased;
-            songEntity.Genre = request.Genre;
-            songEntity.Album = request.Album;
+            //Conditionals are ensuring that the information only gets updated, if new information is being inputed
+            //Check is using default values (null for strings and 0 for ints)
+            //Also, additional function is that built-in .IsNullOrWhiteSpace ensures that accidental spaces from user don't get recorded as new info
+
+            if (!string.IsNullOrWhiteSpace(request.Name))
+                songEntity.Name = request.Name;
+
+            if (!string.IsNullOrWhiteSpace(request.RunTime))
+                songEntity.RunTime = request.RunTime;
+
+            if (request.YearReleased != default)
+                songEntity.YearReleased = request.YearReleased;
+
+            if (!string.IsNullOrWhiteSpace(request.Genre))
+                songEntity.Genre = request.Genre;
+
+            if (!string.IsNullOrWhiteSpace(request.Album))
+                songEntity.Album = request.Album;
 
             var numberOfChanges = await _dbContext.SaveChangesAsync();
 
@@ -150,7 +163,7 @@ namespace MusicApi.Service.Song
         {
             var songEntity = await _dbContext.Songs.FindAsync(songId);
 
-            if (songEntity?.SongId is null) //Refactor to match 148 and 153 
+            if (songEntity is null)
                 return false;
 
             _dbContext.Songs.Remove(songEntity);
