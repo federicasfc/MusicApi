@@ -63,6 +63,20 @@ namespace MusicApi.WebAPI.Controllers
 
         }
 
+        // GetArtistByName endpoint
+
+        [HttpGet("{artistName}")]
+        /* WORKS */
+        public async Task<IActionResult> GetArtistByName([FromRoute] string artistName)
+        {
+            var detail = await _artistService.GetArtistByNameAsync(artistName);
+
+            return detail is not null
+            ? Ok(detail)
+            : NotFound();
+
+        }
+
         // UpdateArtist endpoint
 
         [HttpPut]

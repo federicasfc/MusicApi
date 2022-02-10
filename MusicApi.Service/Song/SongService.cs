@@ -85,6 +85,31 @@ namespace MusicApi.Service.Song
 
         }
 
+        //GetSongByName
+
+        public async Task<SongDetail> GetSongByNameAsync(string songName)
+        {
+            var songEntity = await _dbContext.Songs
+            .FirstOrDefaultAsync(e => e.Name == songName);
+
+            if (songEntity is null)
+                return null;
+
+            return new SongDetail
+            {
+
+                SongId = songEntity.SongId,
+                ArtistId = songEntity.ArtistId,
+                LabelId = songEntity.LabelId,
+                Name = songEntity.Name,
+                RunTime = songEntity.RunTime,
+                YearReleased = songEntity.YearReleased,
+                Genre = songEntity.Genre,
+                Album = songEntity.Album
+            };
+
+        }
+
         //UpdateSongAsync 
 
         //For future improvements: Make it so that not all of the properties HAVE to be updated (remove annotations); Add in some logic that tests if the target property that we don't want to update is null. If not null, don't overwrite to null when it's not adjusted in the method; maybe look at RR for reference?

@@ -70,6 +70,20 @@ namespace MusicApi.WebAPI.Controllers
             return Ok(detail);
         } //works
 
+        //GetSongByName
+
+        [HttpGet("{songName}")]
+
+        public async Task<IActionResult> GetSongByName([FromRoute] string songName)
+        {
+            var detail = await _songService.GetSongByNameAsync(songName);
+
+            if (detail is null)
+                return NotFound();
+
+            return Ok(detail);
+        } //works
+
         //UpdateSong
 
         [HttpPut]
