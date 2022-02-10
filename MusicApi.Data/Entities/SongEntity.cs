@@ -27,12 +27,14 @@ namespace MusicApi.Data.Entities
         public string Album { get; set; }
 
         //Foreign key navigation properties
+        //Label and Song have a one to many relationship, so Song only takes in one label and is connected by the LabelId
         [Required]
 
         public int LabelId { get; set; }
         public LabelEntity Label { get; set; }
 
-        //FK for many to many with Artists
+        //Artist and Song have a new many to many relationship, so Song is able to take in a list of different artists
+        //Accounts for the fact that songs can have more than one artist
 
         public List<ArtistEntity> Artists { get; set; }
 
