@@ -91,6 +91,8 @@ namespace MusicApi.Service.Artist
             //Find the first artist that has the given Name
 
             var artistEntity = await _dbContext.Artists
+                .Include(a => a.Label)
+                .Include(a => a.Songs)
                 .FirstOrDefaultAsync(e => e.Name == artistName);
 
             //If artistEntity is null then return null, otherwise initialize and return a new ArtistDetail
@@ -101,8 +103,18 @@ namespace MusicApi.Service.Artist
                 Name = artistEntity.Name,
                 Genre = artistEntity.Genre,
                 NumberOfStudioAlbums = artistEntity.NumberOfStudioAlbums,
-                //LabelId = artistEntity.LabelId
-            }; //Will not work until refactored with many to many 
+                Label = new LabelListItem()
+                {
+                    LabelId = artistEntity.Label.LabelId,
+                    Name = artistEntity.Label.Name
+                },
+                Songs = artistEntity.Songs.Select(entity => new SongListItem
+                {
+                    SongId = entity.SongId,
+                    Name = entity.Name
+
+                }).ToList()
+            };  
         }
 
         // UpdateArtist method
@@ -112,10 +124,7 @@ namespace MusicApi.Service.Artist
 
             var artistEntity = await _dbContext.Artists.FindAsync(request.ArtistId);
 
-
-            //Original if for reference:
-            //if (artistEntity?.ArtistId == null)
-            if (artistEntity is null)
+            if (artistEntity == null)
                 return false;
 
             // update entity's properties on the condition that they are addressed by request
@@ -148,7 +157,7 @@ namespace MusicApi.Service.Artist
             // Find the artist and validate the ArtistId exists
             var artistEntity = await _dbContext.Artists.FindAsync(artistId);
 
-            if (artistEntity?.ArtistId == null)
+            if (artistEntity == null)
                 return false;
 
             //Remove the note from the DbContet and assert that the one change was saved
