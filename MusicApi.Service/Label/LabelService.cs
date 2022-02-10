@@ -91,6 +91,24 @@ namespace MusicApi.Service.Label
             };
         }
 
+        // GetArtistsByLabel method
+        public async Task<LabelArtistsListItem> GetArtistsByLabelAsync(string labelName)
+        {
+            var labelEntity = await _dbContext.Labels
+                .Include(a => a.Artists)
+                .FirstOrDefaultAsync(e => e.Name == labelName);
+
+            return labelEntity is null ? null : new LabelArtistsListItem
+            {
+                Artists = labelEntity.Artists.Select(entity => new ArtistListItem
+                {
+                    ArtistId = entity.ArtistId,
+                    Name = entity.Name
+
+                }).ToList()
+            };
+        }
+
         // GetAllLabels method
         public async Task<IEnumerable<LabelListItem>> GetAllLabelsAsync()
         {
