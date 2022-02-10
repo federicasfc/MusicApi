@@ -5,7 +5,9 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using MusicApi.Data;
 using MusicApi.Data.Entities;
+using MusicApi.Models.Artist;
 using MusicApi.Models.Label;
+using MusicApi.Models.Song;
 
 namespace MusicApi.Service.Label
 {
@@ -37,6 +39,8 @@ namespace MusicApi.Service.Label
         public async Task<LabelDetail> GetLabelByIdAsync(int labelId)
         {
             var labelEntity = await _dbContext.Labels
+                .Include(a => a.Artists)
+                .Include(a => a.Songs)
                 .FirstOrDefaultAsync(e => e.LabelId == labelId);
 
             return labelEntity is null ? null : new LabelDetail
@@ -44,7 +48,18 @@ namespace MusicApi.Service.Label
                 LabelId = labelEntity.LabelId,
                 Name = labelEntity.Name,
                 YearFounded = labelEntity.YearFounded,
-                Location = labelEntity.Location
+                Location = labelEntity.Location,
+                Artists = labelEntity.Artists.Select(entity => new ArtistListItem
+                {
+                    ArtistId = entity.ArtistId,
+                    Name = entity.Name
+                }).ToList(),
+                Songs = labelEntity.Songs.Select(entity => new SongListItem
+                {
+                    SongId = entity.SongId,
+                    Name = entity.Name
+
+                }).ToList()
             };
         }
 
@@ -52,6 +67,8 @@ namespace MusicApi.Service.Label
         public async Task<LabelDetail> GetLabelByNameAsync(string labelName)
         {
             var labelEntity = await _dbContext.Labels
+                .Include(a => a.Artists)
+                .Include(a => a.Songs)
                 .FirstOrDefaultAsync(e => e.Name == labelName);
 
             return labelEntity is null ? null : new LabelDetail
@@ -59,7 +76,18 @@ namespace MusicApi.Service.Label
                 LabelId = labelEntity.LabelId,
                 Name = labelEntity.Name,
                 YearFounded = labelEntity.YearFounded,
-                Location = labelEntity.Location
+                Location = labelEntity.Location,
+                Artists = labelEntity.Artists.Select(entity => new ArtistListItem
+                {
+                    ArtistId = entity.ArtistId,
+                    Name = entity.Name
+                }).ToList(),
+                Songs = labelEntity.Songs.Select(entity => new SongListItem
+                {
+                    SongId = entity.SongId,
+                    Name = entity.Name
+
+                }).ToList()
             };
         }
 
@@ -80,11 +108,16 @@ namespace MusicApi.Service.Label
         {
             var labelEntity = await _dbContext.Labels.FindAsync(request.LabelId);
 
-            if (labelEntity?.LabelId == null)
+            if (labelEntity == null)
                 return false;
             
-            labelEntity.Name = request.Name;
+            if(!string.IsNullOrWhiteSpace(request.Name))
+                labelEntity.Name = request.Name;
+
+            if(request.YearFounded != default)
             labelEntity.YearFounded = request.YearFounded;
+
+            if(!string.IsNullOrWhiteSpace(request.Location))
             labelEntity.Location = request.Location;
 
             var numberOfChanges = await _dbContext.SaveChangesAsync();
@@ -97,7 +130,7 @@ namespace MusicApi.Service.Label
         {
             var labelEntity = await _dbContext.Labels.FindAsync(labelId);
 
-            if (labelEntity?.LabelId == null)
+            if (labelEntity == null)
                 return false;
 
             _dbContext.Labels.Remove(labelEntity);

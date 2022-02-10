@@ -102,6 +102,8 @@ namespace MusicApi.Service.Song
         public async Task<SongDetail> GetSongByNameAsync(string songName)
         {
             var songEntity = await _dbContext.Songs
+            .Include(s => s.Label)
+            .Include(s => s.Artists)
             .FirstOrDefaultAsync(e => e.Name == songName);
 
             if (songEntity is null)
@@ -111,16 +113,25 @@ namespace MusicApi.Service.Song
             {
 
                 SongId = songEntity.SongId,
-                //ArtistId = songEntity.ArtistId,
-                //LabelId = songEntity.LabelId,
                 Name = songEntity.Name,
                 RunTime = songEntity.RunTime,
                 YearReleased = songEntity.YearReleased,
                 Genre = songEntity.Genre,
-                Album = songEntity.Album
+                Album = songEntity.Album,
+                Label = new LabelListItem()
+                {
+                    LabelId = songEntity.Label.LabelId,
+                    Name = songEntity.Label.Name
+                },
+                Artists = songEntity.Artists.Select(entity => new ArtistListItem
+                {
+                    ArtistId = entity.ArtistId,
+                    Name = entity.Name
+                }).ToList()
+
             };
 
-        } //Will not work until refactored with many to many 
+        }
 
         //UpdateSongAsync 
 
