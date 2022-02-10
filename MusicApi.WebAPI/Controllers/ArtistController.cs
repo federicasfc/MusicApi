@@ -61,7 +61,7 @@ namespace MusicApi.WebAPI.Controllers
             ? Ok(detail)
             : NotFound();
 
-        } //not working with many to many refactor
+        } 
 
         // GetArtistByName endpoint
 
@@ -70,6 +70,19 @@ namespace MusicApi.WebAPI.Controllers
         public async Task<IActionResult> GetArtistByName([FromRoute] string artistName)
         {
             var detail = await _artistService.GetArtistByNameAsync(artistName);
+
+            return detail is not null
+            ? Ok(detail)
+            : NotFound();
+
+        }
+
+        // GetSongsByArtist endpoint
+        [HttpGet("songlist/{artistName}")]
+        /* WORKS */
+        public async Task<IActionResult> GetSongsByArtist([FromRoute] string artistName)
+        {
+            var detail = await _artistService.GetSongsByArtistAsync(artistName);
 
             return detail is not null
             ? Ok(detail)
