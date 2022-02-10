@@ -112,7 +112,10 @@ namespace MusicApi.Service.Artist
 
             var artistEntity = await _dbContext.Artists.FindAsync(request.ArtistId);
 
-            if (artistEntity?.ArtistId == null)
+
+            //Original if for reference:
+            //if (artistEntity?.ArtistId == null)
+            if (artistEntity is null)
                 return false;
 
             // update entity's properties on the condition that they are addressed by request
