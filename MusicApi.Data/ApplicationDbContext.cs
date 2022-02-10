@@ -39,10 +39,10 @@ namespace MusicApi.Data
             //Establishing many to one relationship between Artist table and Song table (one artist can have many songs, but songs can only have one artist)
             //will probably change to a many to many relationship down the line 
 
-            modelBuilder.Entity<SongEntity>()
-            .HasOne(s => s.Artist)
-            .WithMany(a => a.Songs)
-            .HasForeignKey(s => s.ArtistId);
+            /*  modelBuilder.Entity<SongEntity>()
+             .HasOne(s => s.Artist)
+             .WithMany(a => a.Songs)
+             .HasForeignKey(s => s.ArtistId); */
         }
 
 

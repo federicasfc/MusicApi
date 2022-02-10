@@ -5,6 +5,8 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using MusicApi.Data;
 using MusicApi.Data.Entities;
+using MusicApi.Models.Artist;
+using MusicApi.Models.Label;
 using MusicApi.Models.Song;
 
 namespace MusicApi.Service.Song
@@ -32,13 +34,12 @@ namespace MusicApi.Service.Song
             {
                 SongId = request.SongId,
                 LabelId = request.LabelId,
-                ArtistId = request.ArtistId,
                 Name = request.Name,
                 YearReleased = request.YearReleased,
                 Genre = request.Genre
 
 
-            };
+            }; //if many to many relationship between song and artist doesn't work, add an include to the artist so that the artist's labelid is accessible and can be automatically matched to the song's labelId (have been doing it manually to test so far)
 
             _dbContext.Songs.Add(songEntity);
 
@@ -65,6 +66,8 @@ namespace MusicApi.Service.Song
         public async Task<SongDetail> GetSongByIdAsync(int songId)
         {
             var songEntity = await _dbContext.Songs
+            .Include(s => s.Label)
+            .Include(s => s.Artists)
             .FirstOrDefaultAsync(e => e.SongId == songId);
 
             if (songEntity is null)
@@ -74,13 +77,22 @@ namespace MusicApi.Service.Song
             {
 
                 SongId = songEntity.SongId,
-                ArtistId = songEntity.ArtistId,
-                LabelId = songEntity.LabelId,
                 Name = songEntity.Name,
                 RunTime = songEntity.RunTime,
                 YearReleased = songEntity.YearReleased,
                 Genre = songEntity.Genre,
-                Album = songEntity.Album
+                Album = songEntity.Album,
+                Label = new LabelListItem()
+                {
+                    LabelId = songEntity.Label.LabelId,
+                    Name = songEntity.Label.Name
+                },
+                Artists = songEntity.Artists.Select(entity => new ArtistListItem
+                {
+                    ArtistId = entity.ArtistId,
+                    Name = entity.Name
+                }).ToList()
+
             };
 
         }
@@ -118,7 +130,7 @@ namespace MusicApi.Service.Song
         {
             var songEntity = await _dbContext.Songs.FindAsync(request.SongId);
 
-            if (songEntity?.SongId is null)
+            if (songEntity?.SongId is null) //Refactor to match 148 and 153
                 return false;
 
             songEntity.Name = request.Name;
@@ -138,7 +150,7 @@ namespace MusicApi.Service.Song
         {
             var songEntity = await _dbContext.Songs.FindAsync(songId);
 
-            if (songEntity?.SongId is null)
+            if (songEntity?.SongId is null) //Refactor to match 148 and 153 
                 return false;
 
             _dbContext.Songs.Remove(songEntity);
@@ -147,6 +159,40 @@ namespace MusicApi.Service.Song
 
 
         }
+
+        //AssignSongToArtists Method
+
+        public async Task<bool> AssignSongToArtists(int songId, int artistId)
+        {
+            var songToAdd = await _dbContext.Songs.FindAsync(songId);
+
+            if (songToAdd is null)
+                return false;
+
+            var artistToAssignTo = await _dbContext.Artists.Include(a => a.Songs).FirstOrDefaultAsync(a => a.ArtistId == artistId);
+
+            if (artistToAssignTo is null)
+                return false;
+
+
+            artistToAssignTo.Songs.Add(songToAdd);
+
+            var numberOfChanges = await _dbContext.SaveChangesAsync();
+
+            return numberOfChanges == 1;
+
+
+        } //Http Put? will have to adjust route to account for both int parameters
+
+        //Assigning Songs to Artists
+        //Task<bool> 
+        //Parameters: songId and artistId
+        //songToAdd = await _dbContext.Songs.FindAsync(songId)
+        //Dealing with a SongEntity first - validate not null
+        //Then dealing with ArtistEntity - validate not null
+        //artistToAssing already has list of songs so just add song gotten with id to that property Songs
+        //artistToAssign.Songs.Add(songToAdd)
+        //savechangesasync
 
     }
 }

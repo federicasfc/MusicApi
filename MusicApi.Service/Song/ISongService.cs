@@ -20,6 +20,8 @@ namespace MusicApi.Service.Song
 
         Task<bool> DeleteSongAsync(int songId);
 
+        Task<bool> AssignSongToArtists(int songId, int artistId);
+
 
 
 
