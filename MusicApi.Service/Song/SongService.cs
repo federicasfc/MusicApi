@@ -111,8 +111,8 @@ namespace MusicApi.Service.Song
             {
 
                 SongId = songEntity.SongId,
-                ArtistId = songEntity.ArtistId,
-                LabelId = songEntity.LabelId,
+                //ArtistId = songEntity.ArtistId,
+                //LabelId = songEntity.LabelId,
                 Name = songEntity.Name,
                 RunTime = songEntity.RunTime,
                 YearReleased = songEntity.YearReleased,
@@ -120,7 +120,7 @@ namespace MusicApi.Service.Song
                 Album = songEntity.Album
             };
 
-        }
+        } //Will not work until refactored with many to many 
 
         //UpdateSongAsync 
 

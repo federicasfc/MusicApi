@@ -101,8 +101,8 @@ namespace MusicApi.Service.Artist
                 Name = artistEntity.Name,
                 Genre = artistEntity.Genre,
                 NumberOfStudioAlbums = artistEntity.NumberOfStudioAlbums,
-                LabelId = artistEntity.LabelId
-            };
+                //LabelId = artistEntity.LabelId
+            }; //Will not work until refactored with many to many 
         }
 
         // UpdateArtist method
@@ -117,18 +117,18 @@ namespace MusicApi.Service.Artist
 
             // update entity's properties on the condition that they are addressed by request
             // if not addressed, they will retain previous value instead of being updated to null
-            
+
             if (!string.IsNullOrWhiteSpace(request.Name))
                 artistEntity.Name = request.Name;
 
             if (!string.IsNullOrWhiteSpace(request.Genre))
                 artistEntity.Genre = request.Genre;
-            
+
             // conditional prevents int from being updated to 0 if property isn't addressed
             // only loss of functionality is that now it cannot be updated to 0 if it is currently a non zero value
 
             if (request.NumberOfStudioAlbums != default)
-                artistEntity.NumberOfStudioAlbums = request.NumberOfStudioAlbums;           
+                artistEntity.NumberOfStudioAlbums = request.NumberOfStudioAlbums;
 
             // Save the changes to the database and capture how many rows were updated
 
