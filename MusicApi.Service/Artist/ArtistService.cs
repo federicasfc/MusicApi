@@ -58,6 +58,8 @@ namespace MusicApi.Service.Artist
             //Find the first artist that has the given Id
 
             var artistEntity = await _dbContext.Artists
+                .Include(a => a.Label)
+                .Include(a => a.Songs)
                 .FirstOrDefaultAsync(e => e.ArtistId == artistId);
 
             //If artistEntity is null then return null, otherwise initialize and return a new ArtistDetail
@@ -68,7 +70,6 @@ namespace MusicApi.Service.Artist
                 Name = artistEntity.Name,
                 Genre = artistEntity.Genre,
                 NumberOfStudioAlbums = artistEntity.NumberOfStudioAlbums,
-                //LabelId = artistEntity.LabelId
                 Label = new LabelListItem()
                 {
                     LabelId = artistEntity.Label.LabelId,
@@ -82,7 +83,7 @@ namespace MusicApi.Service.Artist
                 }).ToList()
 
             };
-        } //not working- not sure why identical to GetSongById refactor
+        } //works with many to many refactor!
 
         // UpdateArtist method
         public async Task<bool> UpdateArtistAsync(ArtistUpdate request)

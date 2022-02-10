@@ -34,7 +34,6 @@ namespace MusicApi.Service.Song
             {
                 SongId = request.SongId,
                 LabelId = request.LabelId,
-                // ArtistId = request.ArtistId,
                 Name = request.Name,
                 YearReleased = request.YearReleased,
                 Genre = request.Genre
@@ -78,8 +77,6 @@ namespace MusicApi.Service.Song
             {
 
                 SongId = songEntity.SongId,
-                // ArtistId = songEntity.ArtistId,
-                // LabelId = songEntity.LabelId,
                 Name = songEntity.Name,
                 RunTime = songEntity.RunTime,
                 YearReleased = songEntity.YearReleased,

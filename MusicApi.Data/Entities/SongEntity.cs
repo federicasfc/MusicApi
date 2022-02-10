@@ -32,8 +32,7 @@ namespace MusicApi.Data.Entities
         public int LabelId { get; set; }
         public LabelEntity Label { get; set; }
 
-        //[Required]
-        // public int ArtistId { get; set; }
+        //FK for many to many with Artists
 
         public List<ArtistEntity> Artists { get; set; }
 

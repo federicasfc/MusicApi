@@ -21,9 +21,6 @@ namespace MusicApi.Models.Song
 
         public string Album { get; set; }
 
-        // public int LabelId { get; set; }
-        // public int ArtistId { get; set; }
-
         // Songs can only have one label, so only one listitem is necessary
         public LabelListItem Label { get; set; }
 

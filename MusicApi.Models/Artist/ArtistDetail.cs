@@ -14,8 +14,6 @@ namespace MusicApi.Models.Artist
         public string Genre { get; set; }
         public int NumberOfStudioAlbums { get; set; }
 
-        //public int LabelId { get; set; }
-
         public LabelListItem Label { get; set; }
 
         public List<SongListItem> Songs { get; set; }
