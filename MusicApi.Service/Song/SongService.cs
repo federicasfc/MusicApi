@@ -84,8 +84,8 @@ namespace MusicApi.Service.Song
                 Album = songEntity.Album,
                 Label = new LabelListItem()
                 {
-                    LabelId = songEntity.Label.LabelId,
-                    Name = songEntity.Label.Name
+                    LabelId = songEntity.Label?.LabelId ?? 0,
+                    Name = songEntity.Label?.Name ?? "Song not associated with a label"
                 },
                 Artists = songEntity.Artists.Select(entity => new ArtistListItem
                 {
@@ -120,8 +120,8 @@ namespace MusicApi.Service.Song
                 Album = songEntity.Album,
                 Label = new LabelListItem()
                 {
-                    LabelId = songEntity.Label.LabelId,
-                    Name = songEntity.Label.Name
+                    LabelId = songEntity.Label?.LabelId ?? 0,
+                    Name = songEntity.Label?.Name ?? "Song not associated with a label"
                 },
                 Artists = songEntity.Artists.Select(entity => new ArtistListItem
                 {

@@ -72,8 +72,9 @@ namespace MusicApi.Service.Artist
                 NumberOfStudioAlbums = artistEntity.NumberOfStudioAlbums,
                 Label = new LabelListItem()
                 {
-                    LabelId = artistEntity.Label.LabelId,
-                    Name = artistEntity.Label.Name
+                    //question marks allow these to be null// will assign a default value (?? = null coalescing operator will check the left first to see if null, and if null, will assign whatever is on the right)
+                    LabelId = artistEntity.Label?.LabelId ?? 0,
+                    Name = artistEntity.Label?.Name ?? "Artist not signed to label"
                 },
                 Songs = artistEntity.Songs.Select(entity => new SongListItem
                 {
@@ -105,8 +106,8 @@ namespace MusicApi.Service.Artist
                 NumberOfStudioAlbums = artistEntity.NumberOfStudioAlbums,
                 Label = new LabelListItem()
                 {
-                    LabelId = artistEntity.Label.LabelId,
-                    Name = artistEntity.Label.Name
+                    LabelId = artistEntity.Label?.LabelId ?? 0,
+                    Name = artistEntity.Label?.Name ?? "Artist not signed to label"
                 },
                 Songs = artistEntity.Songs.Select(entity => new SongListItem
                 {
