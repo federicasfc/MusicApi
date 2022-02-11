@@ -27,9 +27,8 @@ namespace MusicApi.Data.Entities
         public string Album { get; set; }
 
         //Foreign key navigation properties
-        [Required]
 
-        public int LabelId { get; set; }
+        public int? LabelId { get; set; }
         public LabelEntity Label { get; set; }
 
         //FK for many to many with Artists

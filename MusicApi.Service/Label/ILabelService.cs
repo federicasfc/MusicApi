@@ -16,6 +16,8 @@ namespace MusicApi.Service.Label
 
          Task<IEnumerable<LabelListItem>> GetAllLabelsAsync();
 
+         Task<LabelArtistsListItem> GetArtistsByLabelAsync(string labelName);
+
          Task<bool> UpdateLabelAsync(LabelUpdate request);
 
          Task<bool> DeleteLabelAsync(int labelId);

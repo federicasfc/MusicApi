@@ -114,7 +114,25 @@ namespace MusicApi.Service.Artist
                     Name = entity.Name
 
                 }).ToList()
-            };  
+            };
+        }
+
+        // GetSongsByArtist method
+        public async Task<ArtistSongsListItem> GetSongsByArtistAsync(string artistName)
+        {
+            var artistEntity = await _dbContext.Artists
+               .Include(a => a.Songs)
+               .FirstOrDefaultAsync(e => e.Name == artistName);
+
+            return artistEntity is null ? null : new ArtistSongsListItem
+            {
+                Songs = artistEntity.Songs.Select(entity => new SongListItem
+                {
+                    SongId = entity.SongId,
+                    Name = entity.Name
+
+                }).ToList()
+            };
         }
 
         // UpdateArtist method
@@ -165,5 +183,8 @@ namespace MusicApi.Service.Artist
             _dbContext.Artists.Remove(artistEntity);
             return await _dbContext.SaveChangesAsync() == 1;
         }
+
+
+
     }
 }

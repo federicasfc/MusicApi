@@ -21,8 +21,7 @@ namespace MusicApi.Data.Entities
 
         //Foreign Key navigation properties
 
-        [Required]
-        public int LabelId { get; set; }
+        public int? LabelId { get; set; }
 
         public LabelEntity Label { get; set; }
 

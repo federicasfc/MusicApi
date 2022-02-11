@@ -11,9 +11,9 @@ namespace MusicApi.Models.Song
         [Key]
         public int SongId { get; set; }
 
-        [Required]
+        [Range(1, int.MaxValue)]
 
-        public int LabelId { get; set; }
+        public int? LabelId { get; set; }
 
         //[Required]
 
